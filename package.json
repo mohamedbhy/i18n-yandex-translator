@@ -1,0 +1,29 @@
+{
+  "name": "i18n-google-translator",
+  "version": "0.1.0",
+  "description": "An auto translator to convert i18n strings to the appropriate language using google translate cloud api",
+  "main": "index.js",
+  "dependencies": {
+    "@google-cloud/translate": "^1.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VishwasShashidhar/i18n-google-translator.git"
+  },
+  "keywords": [
+    "i18n",
+    "translator",
+    "google-cloud"
+  ],
+  "author": "Vishwas Shashidhar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VishwasShashidhar/i18n-google-translator/issues"
+  },
+  "homepage": "https://github.com/VishwasShashidhar/i18n-google-translator#readme"
+}
