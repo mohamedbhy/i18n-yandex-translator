@@ -1,11 +1,11 @@
 const fs = require('fs');
-const Translate = require('@google-cloud/translate');
 
 const config = require('../config');
 
 const lang = config.targetLanguage;
 const sourceFile = config.sourceFile;
 const destinationFile = config.destinationFile;
+const key = config.apiKey;
 
 if (!fs.existsSync(sourceFile)) {
     console.error(`file ${sourceFile} does not exist`);
@@ -31,11 +31,8 @@ if (Object.keys(data).length === 0 && data.constructor === Object) {
     process.exit(1);
 }
 
-const projectId = process.env.GOOGLE_CLOUD_PROJECT_ID || config.googleCloudProjectId;
+let translate = require('yandex-translate')(key);
 
-const translate = new Translate({
-    projectId: projectId,
-});
 
 let translatedData = {};
 
@@ -43,20 +40,20 @@ let i = Object.keys(data).length;
 Object.keys(data).forEach((key) => {
     let text = data[key];
     translate
-        .translate(text, lang)
-        .then(results => {
-            translatedData[key] = results[0];
-            i--;
-            if (i <= 0) {
-                finalResult(translatedData);
-            }
-        })
-        .catch(err => {
-            console.error('ERROR:', err);
-            translatedData[key] = text;
-            i--;
-            if (i <= 0) {
-                finalResult(translatedData);
+        .translate(text, { to: lang },(err,res)=>{
+            if(err){
+                console.error('ERROR:', err);
+                translatedData[key] = text;
+                i--;
+                if (i <= 0) {
+                    finalResult(translatedData);
+                }
+            }else {
+                translatedData[key] = res.text[0];
+                i--;
+                if (i <= 0) {
+                    finalResult(translatedData);
+                }
             }
         });
 });

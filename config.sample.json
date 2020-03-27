@@ -1,6 +1,6 @@
 {
-    "googleCloudProjectId": "<your_google_cloud_project_id>",
+    "apiKey": "<your_yandex_translate_api_key>",
     "targetLanguage": "<your_language>",
     "sourceFile": "<your_source_file_path>",
-    "destinationFile": "<your_destination_file_path>"
+    "destinationFile": "<your_destination_file_path"
 }
