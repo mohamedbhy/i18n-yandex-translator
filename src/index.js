@@ -33,36 +33,37 @@ if (Object.keys(data).length === 0 && data.constructor === Object) {
 
 let translate = require('yandex-translate')(key);
 
-
-let translatedData = {};
-
-let i = Object.keys(data).length;
-Object.keys(data).forEach((key) => {
-    let text = data[key];
-    translate
-        .translate(text, { to: lang },(err,res)=>{
-            if(err){
-                console.error('ERROR:', err);
-                translatedData[key] = text;
-                i--;
-                if (i <= 0) {
-                    finalResult(translatedData);
-                }
-            }else {
-                translatedData[key] = res.text[0];
-                i--;
-                if (i <= 0) {
-                    finalResult(translatedData);
-                }
-            }
-        });
-});
-
-function finalResult(data) {
-    let jsonData = JSON.stringify(data, null, 2);
-    fs.writeFile(destinationFile, jsonData, (err) => {
+let asyncTranslate=(text,to)=>new Promise(((resolve, reject) => {
+    translate.translate(text,{to},(err,res)=>{
+        if(err)
+            reject(err);
+        else resolve(res.text[0])
+    })
+}));
+async function process(data){
+    let keys = Object.keys(data);
+    let values = Object.values(data);
+    let res = {};
+    for (let j = 0; j < values.length; j++) {
+        let value = values[j];
+        if(typeof keys[j] == 'string' && keys[j].startsWith('_')){
+            continue;
+        }
+        if(typeof value == 'object')
+            res[[keys[j]]] = await process(value);
+        else {
+            res[[keys[j]]] = await asyncTranslate(value,lang);
+        }
+    }
+    return res;
+}
+(async function translate() {
+    let res = await process(data);
+    res._locale = `${lang}-${lang.toUpperCase()}`;
+    res._name = data._name;
+    fs.writeFile(destinationFile, JSON.stringify(res,null,2), (err) => {
         if (err) {
             console.error(err);
         }
     });
-}
+})();

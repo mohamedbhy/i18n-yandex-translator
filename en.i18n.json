@@ -1,0 +1,16 @@
+{
+  "_locale": "en-US",
+  "_name": "common",
+  "same": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email Address",
+    "password": "Password"
+  },
+  "login": {
+    "rememberme": "Remember Me",
+    "forgotpassword": "Forgot Password?",
+    "orconnectwith": "Or connect with",
+    "donthaveanaccount": "Don't have an account?"
+  }
+}
