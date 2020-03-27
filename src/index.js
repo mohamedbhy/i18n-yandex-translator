@@ -60,7 +60,7 @@ async function process(data){
 (async function translate() {
     let res = await process(data);
     res._locale = `${lang}-${lang.toUpperCase()}`;
-    res._name = data._name;
+    res._namespace = data._namespace;
     fs.writeFile(destinationFile, JSON.stringify(res,null,2), (err) => {
         if (err) {
             console.error(err);
